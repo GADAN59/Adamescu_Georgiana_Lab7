@@ -32,6 +32,25 @@ public partial class ListPage : ContentPage
 		}); 
 	}
 
+    async void OnDeleteItemButtonClicked(object sender, EventArgs e)
+    {
+        var selectedProduct = (Product)listView.SelectedItem;
+
+        if (selectedProduct != null)
+        {
+            var shopList = (ShopList)BindingContext;
+
+            // Assuming you have a method in your database to delete a product
+            await App.Database.DeleteProductAsync(selectedProduct);
+
+            // Refresh the ListView after deletion
+            listView.ItemsSource = await App.Database.GetListProductsAsync(shopList.ID);
+        }
+
+        // Navigate back to the previous page
+        await Navigation.PopAsync();
+    }
+
     protected override async void OnAppearing() 
 	{ 
 		base.OnAppearing(); 
