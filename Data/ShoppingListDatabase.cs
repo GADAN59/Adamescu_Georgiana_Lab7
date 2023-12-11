@@ -34,6 +34,17 @@ namespace Adamescu_Georgiana_Lab7.Data
         { 
             return _database.DeleteAsync(product); 
         }
+
+        public Task<List<ListProduct>> GetAllProducts()
+        {
+            return _database.Table<ListProduct>().ToListAsync();
+        }
+
+        public Task<int> DeleteListProductAsync(ListProduct listProduct)
+        {
+            return _database.DeleteAsync(listProduct);
+        }
+
         public Task<List<Product>> GetProductsAsync() 
         { 
             return _database.Table<Product>().ToListAsync(); 

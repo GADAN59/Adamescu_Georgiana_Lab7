@@ -34,7 +34,25 @@ public partial class ListPage : ContentPage
 
     async void OnDeleteItemButtonClicked(object sender, EventArgs e)
     {
-        var selectedProduct = (Product)listView.SelectedItem;
+        var shopList = (ShopList)BindingContext;
+
+		if(listView.SelectedItem!=null)
+		{
+            var selectedProduct = listView.SelectedItem as Product;
+			var allProducts = await App.Database.GetAllProducts();
+			var productsToDelete = allProducts.Find(listProduct => listProduct.ProductID == selectedProduct.ID && listProduct.ShopListID == shopList.ID);
+
+			if(productsToDelete != null)
+			{
+				await App.Database.DeleteListProductAsync(productsToDelete);
+				await Navigation.PopAsync();
+			}
+
+        }
+
+
+
+        /*var selectedProduct = (Product)listView.SelectedItem;
 
         if (selectedProduct != null)
         {
@@ -48,7 +66,7 @@ public partial class ListPage : ContentPage
         }
 
         // Navigate back to the previous page
-        await Navigation.PopAsync();
+        await Navigation.PopAsync();*/
     }
 
     protected override async void OnAppearing() 
